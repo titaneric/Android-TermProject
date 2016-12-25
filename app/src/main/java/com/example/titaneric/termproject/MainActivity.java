@@ -17,6 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.location.Address;
 
@@ -52,7 +54,15 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setSubtitle("Main");
         setSupportActionBar(toolbar);
-        final String dbName = "danger";
+        Thread thread = new Thread(mutiThread);
+        thread.start();
+        try {
+            thread.join();
+            Log.d("Thread", "finished");
+        } catch (InterruptedException e) {
+            // ...
+        }
+        String dbName = "danger";
         OpenDrawer(dbName);
         LocationManager status = (LocationManager) (this.getSystemService(Context.LOCATION_SERVICE));
         if (status.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -165,7 +175,28 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+    private Runnable mutiThread = new Runnable() {
+        public void run(){
+            syncWeatherData();
+        }
+    };
+    public void syncWeatherData(){
+        WeatherData[] WDArray = new XMLparser().getWeatherDataArray();
+        weatherDB db = new weatherDB(MainActivity.this);
 
+        for(int i=0;i<WDArray.length;i++){
+            db.insertData(WDArray[i].getLocation(), WDArray[i].getTimeRange(), WDArray[i].getWeather(), WDArray[i].getMaxT(),WDArray[i].getMinT(), WDArray[i].getComfortIndex(), WDArray[i].getDropPercent());
+        }
+        db.close();
+    }
+    public String catchWeather(String location){
+        String weather = "";
+        String timeRange = "明日白天";
+        weatherDB db = new weatherDB(MainActivity.this);
+        weather = db.lookForOtherAttribute(location, timeRange).get("weather").toString();
+        db.close();
+        return weather;
+    }
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -210,6 +241,12 @@ public class MainActivity extends AppCompatActivity
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 final String selectedItem = parent.getItemAtPosition(position).toString();
                 View container = findViewById(R.id.contain);
+                View content = findViewById(R.id.nav);
+                TextView time = (TextView) content.findViewById(R.id.time);
+                TextView weather = (TextView) content.findViewById(R.id.weather);
+                time.setText("明日白天");
+                weather.setText(catchWeather(selectedItem));
+
                 ListView placeList = (ListView)container.findViewById(R.id.placeList);
                 OpenDataAdaptor mDbHelper = new OpenDataAdaptor(MainActivity.this, dbName);
                 mDbHelper.createDatabase();

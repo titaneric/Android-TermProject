@@ -45,7 +45,7 @@ public class XMLparser {
             doc.getDocumentElement().normalize();
             NodeList nList = doc.getElementsByTagName("locationName");
             NodeList wList = doc.getElementsByTagName("location");
-            int size = doc.getElementsByTagName("parameterName").getLength();
+            int size = doc.getElementsByTagName("parameterName").getLength() / 3;
             this.WDArray = new WeatherData[size];
             for(int i=0;i<size;i++){
                 this.WDArray[i] = new WeatherData();
@@ -53,15 +53,16 @@ public class XMLparser {
             int index = 0;
             for(int i=0;i<nList.getLength();i++){
                 Node location = nList.item(i);
+                String loc = location.getTextContent();
                 Element locElement = (Element)wList.item(i);
                 NodeList paraList = locElement.getElementsByTagName("parameterName");
+                String weather = "", maxT = "", minT = "", comfortIndex = "", dropPercent = "", timeRange = "";
 
-                System.out.println(location.getTextContent() + "-" + paraList.getLength());
+                //System.out.println(location.getTextContent() + "-" + paraList.getLength());
                 for(int k=0;k<paraList.getLength();k++){
-
+                    /*
                     //today night
                     if(k%3 == 0){
-                        String weather = "", maxT = "", minT = "", comfortIndex = "", dropPercent = "", timeRange = "";
 
                         timeRange = "今晚明晨";
                         //System.out.println(timeRange);
@@ -90,12 +91,12 @@ public class XMLparser {
                             dropPercent = paraList.item(k).getTextContent();
                             //System.out.println("dropPercent " + dropPercent);
                         }
-                        WDArray[index] = new WeatherData(location.getTextContent(), weather, timeRange, maxT, minT, comfortIndex, dropPercent);
-                        index++;
+                        //WDArray[index] = new WeatherData(location.getTextContent(), weather, timeRange, maxT, minT, comfortIndex, dropPercent);
+                        //index++;
                     }
+                    */
                     //day
                     if(k%3 == 1){
-                        String weather = "", maxT = "", minT = "", comfortIndex = "", dropPercent = "", timeRange = "";
 
 
                         timeRange = "明日白天";
@@ -117,14 +118,14 @@ public class XMLparser {
                         //the drop percent
                         else if((k-k%3)/3== 4){
                             dropPercent = paraList.item(k).getTextContent();
+                            this.WDArray[index] = new WeatherData(loc, weather, timeRange, maxT, minT, comfortIndex, dropPercent);
+                            index++;
                         }
-                        WDArray[index] = new WeatherData(location.getTextContent(), weather, timeRange, maxT, minT, comfortIndex, dropPercent);
-                        index++;
-                    }
 
+                    }
+                    /*
                     //tomorrow night
                     if(k %3 == 2){
-                        String weather = "", maxT = "", minT = "", comfortIndex = "", dropPercent = "", timeRange = "";
 
 
                         timeRange = "明日晚上";
@@ -147,15 +148,21 @@ public class XMLparser {
                         else if((k-k%3)/3 == 4){
                             dropPercent = paraList.item(k).getTextContent();
                         }
-                        WDArray[index] = new WeatherData(location.getTextContent(), weather, timeRange, maxT, minT, comfortIndex, dropPercent);
-                        index++;
+                        //WDArray[index] = new WeatherData(location.getTextContent(), weather, timeRange, maxT, minT, comfortIndex, dropPercent);
+                        //index++;
                     }
+                    */
                 }
+
             }
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public WeatherData[] getWeatherDataArray(){
+        return this.WDArray;
     }
 
 }

@@ -27,13 +27,13 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView4"
+                android:id="@+id/time"
                 android:layout_weight="1" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView3"
+                android:id="@+id/weather"
                 android:layout_weight="1" />
 
             <Spinner

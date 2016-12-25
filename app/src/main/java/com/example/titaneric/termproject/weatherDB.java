@@ -15,12 +15,12 @@ import java.util.HashMap;
 public class weatherDB extends SQLiteOpenHelper {
     //String location = "";
     public weatherDB(Context context){//, String loc){
-        super(context, "weather", null, 1);
+        super(context, "DB", null, 1);
         //this.location = loc;
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query = "CREATE TABLE weather (location TEXT time TEXT, weather TEXT, maxT TEXT, minT TEXT, comfortIndex TEXT, dropPercent TEXT)";//, location);
+        String query = "CREATE TABLE weather (location TEXT, time TEXT, weather TEXT, maxT TEXT, minT TEXT, comfortIndex TEXT, dropPercent TEXT)";//, location);
         db.execSQL(query);
     }
 
@@ -28,7 +28,7 @@ public class weatherDB extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         String query = "drop TABLE weather";
         db.execSQL(query);
-        query = "CREATE TABLE weather (location TEXT time TEXT, weather TEXT, maxT TEXT, minT TEXT, comfortIndex TEXT, dropPercent TEXT)";//, location);
+        query = "CREATE TABLE weather (location TEXT, time TEXT, weather TEXT, maxT TEXT, minT TEXT, comfortIndex TEXT, dropPercent TEXT)";//, location);
         db.execSQL(query);
     }
     public void insertData(String location, String time, String weather, String maxT, String minT, String comfortIndex, String dropPercent){
@@ -42,7 +42,7 @@ public class weatherDB extends SQLiteOpenHelper {
         values.put("minT", minT);
         values.put("comfortIndex", comfortIndex);
         values.put("dropPercent", dropPercent);
-        db.insert(location, null, values);
+        db.insert("weather", null, values);
 
     }
     public HashMap lookForOtherAttribute(String location, String timeRange){
