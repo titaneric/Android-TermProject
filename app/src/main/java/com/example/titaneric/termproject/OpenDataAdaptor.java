@@ -21,7 +21,9 @@ public class OpenDataAdaptor {
         this.mContext = context;
         mDbHelper = new OpenDataDB(mContext, dbName);
     }
+    public void reNameTable(){
 
+    }
     public OpenDataAdaptor createDatabase() throws SQLException
     {
         try
