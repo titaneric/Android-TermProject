@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/swim"
+            android:icon="@drawable/swimming_figure"
+            android:title="游泳池" />
+        <item
+            android:id="@+id/surf"
+            android:icon="@drawable/person_surfing"
+            android:title="衝浪" />
+        <item
+            android:id="@+id/dive"
+            android:icon="@drawable/diving_silhouette"
+            android:title="潛水" />
+        <item
+            android:id="@+id/raft"
+            android:icon="@drawable/canoe_athlete"
+            android:title="泛舟" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send" />
+        </menu>
+    </item>
+
+</menu>
