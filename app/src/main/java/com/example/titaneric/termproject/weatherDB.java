@@ -27,7 +27,7 @@ public class weatherDB extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         String query = "drop TABLE weather";
-        
+
         db.execSQL(query);
         query = "CREATE TABLE weather (location TEXT, time TEXT, weather TEXT, maxT TEXT, minT TEXT, comfortIndex TEXT, dropPercent TEXT)";//, location);
         db.execSQL(query);

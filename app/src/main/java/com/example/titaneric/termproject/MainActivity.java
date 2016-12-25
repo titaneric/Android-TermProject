@@ -8,6 +8,8 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationListener;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -54,13 +56,22 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setSubtitle("Main");
         setSupportActionBar(toolbar);
-        Thread thread = new Thread(mutiThread);
-        thread.start();
-        try {
-            thread.join();
-            Log.d("Thread", "finished");
-        } catch (InterruptedException e) {
-            // ...
+        ConnectivityManager cm =
+                (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        if(isConnected) {
+            Thread thread = new Thread(mutiThread);
+            thread.start();
+
+            try {
+                thread.join();
+                Log.d("Thread", "finished");
+            } catch (InterruptedException e) {
+                // ...
+            }
         }
         String dbName = "danger";
         OpenDrawer(dbName);
@@ -226,6 +237,9 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
     public void OpenDrawer(final String idName){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setSubtitle(idName);
+        //setSupportActionBar(toolbar);
         final String dbName = idName + ".sqlite";
         OpenDataAdaptor mDbHelper = new OpenDataAdaptor(MainActivity.this, dbName);
         mDbHelper.createDatabase();
@@ -241,11 +255,13 @@ public class MainActivity extends AppCompatActivity
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 final String selectedItem = parent.getItemAtPosition(position).toString();
                 View container = findViewById(R.id.contain);
-                View content = findViewById(R.id.nav);
-                TextView time = (TextView) content.findViewById(R.id.time);
-                TextView weather = (TextView) content.findViewById(R.id.weather);
-                time.setText("明日白天");
-                weather.setText(catchWeather(selectedItem));
+                if(idName == "swim" || idName == "danger") {
+                    View content = findViewById(R.id.nav);
+                    TextView time = (TextView) content.findViewById(R.id.time);
+                    TextView weather = (TextView) content.findViewById(R.id.weather);
+                    time.setText("明日白天");
+                    weather.setText(catchWeather(selectedItem));
+                }
 
                 ListView placeList = (ListView)container.findViewById(R.id.placeList);
                 OpenDataAdaptor mDbHelper = new OpenDataAdaptor(MainActivity.this, dbName);

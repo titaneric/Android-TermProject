@@ -28,13 +28,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/time"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="left" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/weather"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="center" />
 
             <Spinner
                 android:layout_height="wrap_content"
