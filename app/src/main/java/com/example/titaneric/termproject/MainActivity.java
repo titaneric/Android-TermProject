@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity
         String[] tableList = mDbHelper.getTableName();
         mDbHelper.close();
         ArrayAdapter<String> county_List = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_spinner_dropdown_item, tableList);
+                R.layout.spinner, tableList);
         Spinner county_spin = (Spinner) findViewById(R.id.county_spin);
         county_spin.setAdapter(county_List);
 

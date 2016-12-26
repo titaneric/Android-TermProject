@@ -16,5 +16,6 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/placeList" />
+        android:id="@+id/placeList"
+        style="@android:style/Widget.Holo.Light.ListView"/>
 </RelativeLayout>
