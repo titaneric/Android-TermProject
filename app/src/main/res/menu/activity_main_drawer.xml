@@ -24,7 +24,16 @@
             android:icon="@drawable/caution_sign"
             android:title="危險水域" />
     </group>
-
+    <item android:title="其他資訊">
+    <group >
+        <menu>
+        <item android:title="關於APP"
+            android:id="@+id/about" />
+        <item android:title="關於作者"
+            android:id="@+id/creator" />
+        </menu>>
+    </group>
+    </item>
 
 
 </menu>

@@ -232,10 +232,24 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.danger) {
             OpenDrawer("danger", title);
         }
+        else if (id == R.id.about) {
+            openInfo(title);
+        }
+        else if (id == R.id.creator) {
+            openInfo(title);
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    public void openInfo(String title){
+        Intent intent= new Intent(MainActivity.this,AppActivity.class);
+        Bundle data=new Bundle();
+        data.putString("Title", title);
+        intent.putExtras(data);
+        startActivity(intent);
+
     }
     public void OpenDrawer(final String idName, String title){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
