@@ -241,6 +241,7 @@ public class MainActivity extends AppCompatActivity
         toolbar.setSubtitle(idName);
         //setSupportActionBar(toolbar);
         final String dbName = idName + ".sqlite";
+
         OpenDataAdaptor mDbHelper = new OpenDataAdaptor(MainActivity.this, dbName);
         mDbHelper.createDatabase();
         mDbHelper.open();
@@ -250,6 +251,7 @@ public class MainActivity extends AppCompatActivity
                 android.R.layout.simple_spinner_dropdown_item, tableList);
         Spinner county_spin = (Spinner) findViewById(R.id.county_spin);
         county_spin.setAdapter(county_List);
+
         county_spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

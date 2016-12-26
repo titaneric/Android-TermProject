@@ -58,6 +58,7 @@ public class weatherDB extends SQLiteOpenHelper {
         for(int i=0;i<c.getColumnCount();i++){
             m.put(c.getColumnName(i), c.getString(i));
         }
+        c.close();
         return m;
     }
     public WeatherData[] getData(){
@@ -72,7 +73,7 @@ public class weatherDB extends SQLiteOpenHelper {
         for(int i=0;i<cursor.getCount();i++){
             wdArray[i] = new WeatherData(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5),cursor.getString(6));
         }
-
+        cursor.close();
         return wdArray;
 
     }

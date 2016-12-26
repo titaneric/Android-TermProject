@@ -21,9 +21,7 @@ public class OpenDataAdaptor {
         this.mContext = context;
         mDbHelper = new OpenDataDB(mContext, dbName);
     }
-    public void reNameTable(){
 
-    }
     public OpenDataAdaptor createDatabase() throws SQLException
     {
         try
@@ -64,16 +62,20 @@ public class OpenDataAdaptor {
         if(c!=null){
             c.moveToFirst();
         }
-        String[] tableList = new String[c.getCount()];
+        String[] tableList = new String[c.getCount() - 1];
         for(int i=0;i<tableList.length;i++){
             tableList[i] = new String();
         }
         int i=0;
-        while(!c.isLast()){
-            tableList[i] = c.getString(0);
+        while(i<(c.getCount() - 1)){
+            if(!c.getString(0).startsWith("android")) {
+                tableList[i] = c.getString(0);
+                i++;
+            }
             c.moveToNext();
-            i++;
+
         }
+        c.close();
         return tableList;
     }
 
@@ -90,11 +92,12 @@ public class OpenDataAdaptor {
                 placeArray[i] = new String();
             }
             int i=0;
-            while(!mCur.isLast()){
+            while(i<mCur.getCount()){
                 placeArray[i] = mCur.getString(0);
                 mCur.moveToNext();
                 i++;
             }
+            mCur.close();
             return placeArray;
         }
         catch (SQLException mSQLException)
@@ -115,6 +118,7 @@ public class OpenDataAdaptor {
         for(int i=0;i<c.getColumnCount();i++){
             m.put(c.getColumnName(i), c.getString(i));
         }
+        c.close();
         return m;
     }
 }
