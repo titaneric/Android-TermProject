@@ -281,14 +281,22 @@ public class MainActivity extends AppCompatActivity
                     weather.setText(catchWeather(selectedItem));
                 }
 
-                ListView placeList = (ListView)container.findViewById(R.id.placeList);
+                final ListView placeList = (ListView)container.findViewById(R.id.placeList);
                 OpenDataAdaptor mDbHelper = new OpenDataAdaptor(MainActivity.this, dbName);
                 mDbHelper.createDatabase();
                 mDbHelper.open();
+
+
                 String[] placeArray= mDbHelper.getTestData(selectedItem);
+                ListModel info_data[] = new ListModel[placeArray.length];
+                for(int i=0;i<placeArray.length;i++){
+                    info_data[i] = new ListModel(placeArray[i], getResources().getIdentifier(idName, "drawable", getPackageName()));
+                }
                 mDbHelper.close();
-                ArrayAdapter<String> adapter=new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_spinner_dropdown_item,placeArray);
-                placeList.setAdapter(adapter);
+                MyAdaptor adaptor = new MyAdaptor(MainActivity.this, R.layout.node_view, info_data);
+                //ArrayAdapter<String> adapter=new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_spinner_dropdown_item,placeArray);
+
+                placeList.setAdapter(adaptor);
                 placeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -310,13 +318,14 @@ public class MainActivity extends AppCompatActivity
                         startActivity(intent);
                         */
                         if(idName=="danger"){
-                            String placename= parent.getItemAtPosition(position).toString();
+                            ListModel list = (ListModel)parent.getItemAtPosition(position);
+                            String placename= list.getText();
                             OpenDataAdaptor mDbHelper = new OpenDataAdaptor(MainActivity.this, dbName);
                             mDbHelper.createDatabase();
                             mDbHelper.open();
                             HashMap rowList = mDbHelper.lookForOtherAttribute(placename, selectedItem);
                             mDbHelper.close();
-                            String tar=parent.getItemAtPosition(position).toString();
+                            String tar=list.getText();
                             String LatS=String.valueOf(rowList.get("latitude"));
                             String LogS=String.valueOf(rowList.get("longitude"));
                             Uri gmmIntentUri = Uri.parse("geo:"+LatS+","+LogS+"?q="+LatS+","+LogS+"("+tar+")");
@@ -326,13 +335,14 @@ public class MainActivity extends AppCompatActivity
                         }
                         else if(idName=="swim")
                         {
-                            String placename= parent.getItemAtPosition(position).toString();
+                            ListModel list = (ListModel)parent.getItemAtPosition(position);
+                            String placename= list.getText();
                             OpenDataAdaptor mDbHelper = new OpenDataAdaptor(MainActivity.this, dbName);
                             mDbHelper.createDatabase();
                             mDbHelper.open();
                             HashMap rowList = mDbHelper.lookForOtherAttribute(placename, selectedItem);
                             mDbHelper.close();
-                            String tar=parent.getItemAtPosition(position).toString();
+                            String tar=list.getText();
                             String LatS=String.valueOf(rowList.get("latitude"));
                             String LogS=String.valueOf(rowList.get("longitude"));
                             Uri gmmIntentUri = Uri.parse("geo:"+LatS+","+LogS+"?q="+placename);
@@ -341,15 +351,15 @@ public class MainActivity extends AppCompatActivity
                             startActivity(mapIntent);
                         }
                         else {
-
-                            String placename= parent.getItemAtPosition(position).toString();
+                            ListModel list = (ListModel)parent.getItemAtPosition(position);
+                            String placename= list.getText();
                             OpenDataAdaptor mDbHelper = new OpenDataAdaptor(MainActivity.this, dbName);
                             mDbHelper.createDatabase();
                             mDbHelper.open();
                             HashMap rowList = mDbHelper.lookForOtherAttribute_DSC(placename, selectedItem);
                             mDbHelper.close();
                             String Address = rowList.get("location").toString();
-                            String tar=parent.getItemAtPosition(position).toString();
+                            String tar=list.getText();
                             String LatS=String.valueOf(location.getLatitude());
                             String LogS=String.valueOf(location.getLongitude());
                             Uri gmmIntentUri = Uri.parse("geo:"+LatS+","+LogS+"?q="+Address+tar);

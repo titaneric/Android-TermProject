@@ -6,7 +6,15 @@
     <TextView
         android:text="TextView"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:textSize="30sp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/infomation"
+        android:id="@+id/information"
         android:textSize="24sp" />
+
 </LinearLayout>

@@ -6,4 +6,6 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
+    <string name = "creator_info">本程式由李皓文和黃晨懿製作</string>
+    <string name = "app_info">此APP提供游泳池、衝浪、潛水、泛舟等資訊。另外危險水域資訊希望能提醒使用者留意各縣市危險水域位置，盡量避免前往該區域。</string>
 </resources>

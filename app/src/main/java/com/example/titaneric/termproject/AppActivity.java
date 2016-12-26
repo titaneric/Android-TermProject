@@ -13,8 +13,16 @@ public class AppActivity extends AppCompatActivity {
         setContentView(R.layout.activity_app);
         Bundle data=this.getIntent().getExtras();
         View content = (View)findViewById(R.id.info);
-        TextView info = (TextView) content.findViewById(R.id.infomation);
+        TextView titleText = (TextView) content.findViewById(R.id.title);
+
+        TextView info = (TextView) content.findViewById(R.id.information);
         String title = data.get("Title").toString();
-        info.setText("From" + title);
+        titleText.setText(title);
+        if(title.equals("關於APP")) {
+            info.setText(R.string.app_info);
+        }
+        else if(title.equals("關於作者")){
+            info.setText(R.string.creator_info);
+        }
     }
 }

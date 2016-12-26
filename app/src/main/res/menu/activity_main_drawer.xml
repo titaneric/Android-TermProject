@@ -4,24 +4,24 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/swim"
-            android:icon="@drawable/swimming_figure"
+            android:icon="@drawable/swim"
             android:title="游泳池" />
         <item
             android:id="@+id/surf"
-            android:icon="@drawable/person_surfing"
+            android:icon="@drawable/surf"
             android:title="衝浪" />
         <item
             android:id="@+id/dive"
-            android:icon="@drawable/diving_silhouette"
+            android:icon="@drawable/dive"
             android:title="潛水" />
 
         <item
             android:id="@+id/raft"
-            android:icon="@drawable/canoe_athlete"
+            android:icon="@drawable/canoe"
             android:title="泛舟" />
         <item
             android:id="@+id/danger"
-            android:icon="@drawable/caution_sign"
+            android:icon="@drawable/danger"
             android:title="危險水域" />
     </group>
     <item android:title="其他資訊">
