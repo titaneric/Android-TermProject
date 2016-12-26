@@ -121,4 +121,18 @@ public class OpenDataAdaptor {
         c.close();
         return m;
     }
+    public HashMap lookForOtherAttribute_DSC(String id, String tableName){
+        String sql =String.format("SELECT * FROM %s WHERE shopName = \"%s\"", tableName, id);
+        Cursor c = mDb.rawQuery(sql, null);
+        if(c!=null){
+            c.moveToFirst();
+        }
+        HashMap m = new HashMap();
+
+        for(int i=0;i<c.getColumnCount();i++){
+            m.put(c.getColumnName(i), c.getString(i));
+        }
+        c.close();
+        return m;
+    }
 }

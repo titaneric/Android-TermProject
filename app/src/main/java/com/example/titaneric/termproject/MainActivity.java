@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.location.LocationListener;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -291,6 +292,7 @@ public class MainActivity extends AppCompatActivity
                 placeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        /*
                         Intent intent= new Intent(MainActivity.this,MapsActivity.class);
                         Bundle data=new Bundle();
                         String placename= parent.getItemAtPosition(position).toString();
@@ -306,6 +308,55 @@ public class MainActivity extends AppCompatActivity
                         data.putDouble("Lon",location.getLongitude());
                         intent.putExtras(data);
                         startActivity(intent);
+                        */
+                        if(idName=="danger"){
+                            String placename= parent.getItemAtPosition(position).toString();
+                            OpenDataAdaptor mDbHelper = new OpenDataAdaptor(MainActivity.this, dbName);
+                            mDbHelper.createDatabase();
+                            mDbHelper.open();
+                            HashMap rowList = mDbHelper.lookForOtherAttribute(placename, selectedItem);
+                            mDbHelper.close();
+                            String tar=parent.getItemAtPosition(position).toString();
+                            String LatS=String.valueOf(rowList.get("latitude"));
+                            String LogS=String.valueOf(rowList.get("longitude"));
+                            Uri gmmIntentUri = Uri.parse("geo:"+LatS+","+LogS+"?q="+LatS+","+LogS+"("+tar+")");
+                            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                            mapIntent.setPackage("com.google.android.apps.maps");
+                            startActivity(mapIntent);
+                        }
+                        else if(idName=="swim")
+                        {
+                            String placename= parent.getItemAtPosition(position).toString();
+                            OpenDataAdaptor mDbHelper = new OpenDataAdaptor(MainActivity.this, dbName);
+                            mDbHelper.createDatabase();
+                            mDbHelper.open();
+                            HashMap rowList = mDbHelper.lookForOtherAttribute(placename, selectedItem);
+                            mDbHelper.close();
+                            String tar=parent.getItemAtPosition(position).toString();
+                            String LatS=String.valueOf(rowList.get("latitude"));
+                            String LogS=String.valueOf(rowList.get("longitude"));
+                            Uri gmmIntentUri = Uri.parse("geo:"+LatS+","+LogS+"?q="+placename);
+                            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                            mapIntent.setPackage("com.google.android.apps.maps");
+                            startActivity(mapIntent);
+                        }
+                        else {
+
+                            String placename= parent.getItemAtPosition(position).toString();
+                            OpenDataAdaptor mDbHelper = new OpenDataAdaptor(MainActivity.this, dbName);
+                            mDbHelper.createDatabase();
+                            mDbHelper.open();
+                            HashMap rowList = mDbHelper.lookForOtherAttribute_DSC(placename, selectedItem);
+                            mDbHelper.close();
+                            String Address = rowList.get("location").toString();
+                            String tar=parent.getItemAtPosition(position).toString();
+                            String LatS=String.valueOf(location.getLatitude());
+                            String LogS=String.valueOf(location.getLongitude());
+                            Uri gmmIntentUri = Uri.parse("geo:"+LatS+","+LogS+"?q="+Address+tar);
+                            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                            mapIntent.setPackage("com.google.android.apps.maps");
+                            startActivity(mapIntent);
+                        }
                     }
                 });
             }
