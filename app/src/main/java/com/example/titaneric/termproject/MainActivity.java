@@ -48,14 +48,16 @@ public class MainActivity extends AppCompatActivity
     LocationManager mLocationManager;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setSubtitle("Main");
+
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         ConnectivityManager cm =
                 (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -74,7 +76,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
         String dbName = "danger";
-        OpenDrawer(dbName);
+        OpenDrawer(dbName, "危險水域");
         LocationManager status = (LocationManager) (this.getSystemService(Context.LOCATION_SERVICE));
         if (status.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             //如果GPS或網路定位開啟，呼叫locationServiceInitial()更新位置
@@ -213,32 +215,31 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        String subTitle = item.getTitle().toString();
+        String title = item.getTitle().toString();
         if (id == R.id.swim) {
             //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             //toolbar.setSubtitle(subTitle);
             //setSupportActionBar(toolbar);
-            OpenDrawer("swim");
+            OpenDrawer("swim", title);
 
         } else if (id == R.id.surf) {
-            OpenDrawer("surf");
+            OpenDrawer("surf", title);
         } else if (id == R.id.dive) {
-            OpenDrawer("dive");
+            OpenDrawer("dive", title);
         } else if (id == R.id.raft) {
-            OpenDrawer("canoe");
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            OpenDrawer("canoe", title);
+        }
+        else if (id == R.id.danger) {
+            OpenDrawer("danger", title);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    public void OpenDrawer(final String idName){
+    public void OpenDrawer(final String idName, String title){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setSubtitle(idName);
+        toolbar.setTitle(title);
         //setSupportActionBar(toolbar);
         final String dbName = idName + ".sqlite";
 

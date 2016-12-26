@@ -14,23 +14,17 @@
             android:id="@+id/dive"
             android:icon="@drawable/diving_silhouette"
             android:title="潛水" />
+
         <item
             android:id="@+id/raft"
             android:icon="@drawable/canoe_athlete"
             android:title="泛舟" />
+        <item
+            android:id="@+id/danger"
+            android:icon="@drawable/caution_sign"
+            android:title="危險水域" />
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
+
 
 </menu>
