@@ -264,10 +264,10 @@ public class MainActivity extends AppCompatActivity
         String[] tableList = mDbHelper.getTableName();
         mDbHelper.close();
         ArrayAdapter<String> county_List = new ArrayAdapter<String>(MainActivity.this,
-                R.layout.spinner, tableList);
+                R.layout.spinner_s, tableList);
         Spinner county_spin = (Spinner) findViewById(R.id.county_spin);
         county_spin.setAdapter(county_List);
-
+        county_List.setDropDownViewResource(R.layout.spinner);
         county_spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

@@ -25,26 +25,26 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/time"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
                 android:textAlignment="center"
                 android:gravity="center"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/weather"
-                android:layout_weight="1"
+                android:layout_weight="1.2"
                 android:gravity="center" />
 
             <Spinner
                 android:layout_height="wrap_content"
                 android:id="@+id/county_spin"
                 android:gravity="right"
-                android:layout_width="wrap_content"
-                android:layout_weight="0.33"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
                 android:dropDownWidth="match_parent"
                 style="@android:style/Theme.Holo.Light"/>
         </LinearLayout>
