@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity
     private LocationManager lms;
     private Location location;
     LocationManager mLocationManager;
-
+    private Spinner county_spin;
 
 
     @Override
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity
                 GPS=false;
                 Toast.makeText(getApplicationContext(),"關閉GPS定位",Toast.LENGTH_SHORT).show();
                 item.setIcon(R.drawable.ic_gps_off_black_48dp);
-                Spinner county_spin = (Spinner) findViewById(R.id.county_spin);
+                county_spin = (Spinner) findViewById(R.id.county_spin);
                 county_spin.setEnabled(true);
             }
             else {
@@ -265,7 +265,7 @@ public class MainActivity extends AppCompatActivity
         mDbHelper.close();
         ArrayAdapter<String> county_List = new ArrayAdapter<String>(MainActivity.this,
                 R.layout.spinner_s, tableList);
-        Spinner county_spin = (Spinner) findViewById(R.id.county_spin);
+        final Spinner county_spin = (Spinner) findViewById(R.id.county_spin);
         county_spin.setAdapter(county_List);
         county_List.setDropDownViewResource(R.layout.spinner);
         county_spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -273,12 +273,18 @@ public class MainActivity extends AppCompatActivity
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 final String selectedItem = parent.getItemAtPosition(position).toString();
                 View container = findViewById(R.id.contain);
-                if(idName == "swim" || idName == "danger") {
-                    View content = findViewById(R.id.nav);
-                    TextView time = (TextView) content.findViewById(R.id.time);
-                    TextView weather = (TextView) content.findViewById(R.id.weather);
+                View content = findViewById(R.id.nav);
+                TextView time = (TextView) content.findViewById(R.id.time);
+                TextView weather = (TextView) content.findViewById(R.id.weather);
+                if(idName.equals("swim") || idName.equals("danger")) {
+                    county_spin.setEnabled(true);
                     time.setText("明日白天");
                     weather.setText(catchWeather(selectedItem));
+                }
+                else {
+                    county_spin.setEnabled(false);
+                    time.setText("");
+                    weather.setText("");
                 }
 
                 final ListView placeList = (ListView)container.findViewById(R.id.placeList);
@@ -300,7 +306,18 @@ public class MainActivity extends AppCompatActivity
                 placeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        /*
+                        Intent intent= new Intent(MainActivity.this,MapsActivity.class);
+                        Bundle data=new Bundle();
+
+                        ListModel list = (ListModel)parent.getItemAtPosition(position);
+                        String placename= list.getText();
+                        data.putString("Place",placename);
+                        data.putString("dbname",idName);
+                        data.putString("select",selectedItem);
+                        intent.putExtras(data);
+                        startActivity(intent);
+
+                                /*
                         Intent intent= new Intent(MainActivity.this,MapsActivity.class);
                         Bundle data=new Bundle();
                         String placename= parent.getItemAtPosition(position).toString();
@@ -316,7 +333,7 @@ public class MainActivity extends AppCompatActivity
                         data.putDouble("Lon",location.getLongitude());
                         intent.putExtras(data);
                         startActivity(intent);
-                        */
+                        *//*
                         if(idName=="danger"){
                             ListModel list = (ListModel)parent.getItemAtPosition(position);
                             String placename= list.getText();
@@ -366,7 +383,7 @@ public class MainActivity extends AppCompatActivity
                             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                             mapIntent.setPackage("com.google.android.apps.maps");
                             startActivity(mapIntent);
-                        }
+                        }*/
                     }
                 });
             }

@@ -1,8 +1,13 @@
 package com.example.titaneric.termproject;
 
+import android.content.Intent;
 import android.location.Location;
+import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -14,65 +19,82 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity {
 
 	private GoogleMap mMap;
 
-	private String Name;
-	private HashMap rowList;
+	private String Place;
+	private String idName;
     private String dbName;
     private String[] latlonList = {"swim", "danger"};
     private String[] locationList = {"dive", "canoe", "surf"};
-	private boolean GPS;
+	private TextView Title;
+	private TextView Content;
+	private String selectedItem;
 	private double Lon,Lat;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_maps);
 		// Obtain the SupportMapFragment and get notified when the map is ready to be used.
-		SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.map);
-		mapFragment.getMapAsync(this);
+
 		Bundle data=this.getIntent().getExtras();
-		rowList = (HashMap) data.getSerializable("HashMap");
-        dbName = data.getString("dbName");
-		Name=rowList.get("location").toString();
-		GPS=data.getBoolean("GPS");
-		Lat=data.getDouble("Lat");
-		Lon=data.getDouble("Lon");
+
+        idName = data.getString("dbname");
+		selectedItem=data.getString("select");
+		Place=data.getString("Place");
+		dbName=idName+".sqlite";
+		Title=(TextView)findViewById(R.id.place);
+		Content=(TextView)findViewById(R.id.otherInfo);
+		Title.setText(Place);
+		Content.setText("INFO");
+
+
+	}
+	public void OpenMap(View view)
+	{
+		if(idName.equals("danger")){
+			OpenDataAdaptor mDbHelper = new OpenDataAdaptor(this, dbName);
+			mDbHelper.createDatabase();
+			mDbHelper.open();
+			HashMap rowList = mDbHelper.lookForOtherAttribute(Place, selectedItem);
+			mDbHelper.close();
+			String LatS=String.valueOf(rowList.get("latitude"));
+			String LogS=String.valueOf(rowList.get("longitude"));
+			Uri gmmIntentUri = Uri.parse("geo:"+LatS+","+LogS+"?q="+LatS+","+LogS+"("+Place+")");
+			Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+			mapIntent.setPackage("com.google.android.apps.maps");
+			startActivity(mapIntent);
+		}
+		else if(idName.equals("swim"))
+		{
+			OpenDataAdaptor mDbHelper = new OpenDataAdaptor(this, dbName);
+			mDbHelper.createDatabase();
+			mDbHelper.open();
+			HashMap rowList = mDbHelper.lookForOtherAttribute(Place, selectedItem);
+			mDbHelper.close();
+			String LatS=String.valueOf(rowList.get("latitude"));
+			String LogS=String.valueOf(rowList.get("longitude"));
+			Uri gmmIntentUri = Uri.parse("geo:"+LatS+","+LogS+"?q="+Place);
+			Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+			mapIntent.setPackage("com.google.android.apps.maps");
+			startActivity(mapIntent);
+		}
+		else {
+			OpenDataAdaptor mDbHelper = new OpenDataAdaptor(this, dbName);
+			mDbHelper.createDatabase();
+			mDbHelper.open();
+			HashMap rowList = mDbHelper.lookForOtherAttribute_DSC(Place, selectedItem);
+			mDbHelper.close();
+			String Address = rowList.get("location").toString();
+
+
+			Uri gmmIntentUri = Uri.parse("geo:0,0?q="+Address+Place);
+			Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+			mapIntent.setPackage("com.google.android.apps.maps");
+			startActivity(mapIntent);
+		}
 	}
 
 
-	/**
-	 * Manipulates the map once available.
-	 * This callback is triggered when the map is ready to be used.
-	 * This is where we can add markers or lines, add listeners or move the camera. In this case,
-	 * we just add a marker near Sydney, Australia.
-	 * If Google Play services is not installed on the device, the user will be prompted to install
-	 * it inside the SupportMapFragment. This method will only be triggered once the user has
-	 * installed Google Play services and returned to the app.
-	 */
-	@Override
-	public void onMapReady(GoogleMap googleMap) {
-		mMap = googleMap;
-
-		// Add a marker in Sydney and move the camera
-        if(Arrays.asList(latlonList).contains(dbName)) {
-            double latitude =  Double.parseDouble(rowList.get("latitude").toString());
-            double longitude =  Double.parseDouble(rowList.get("longitude").toString());
-            LatLng location = new LatLng(latitude, longitude);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 13));
-            mMap.addMarker(new MarkerOptions().position(location).title(Name));
-			if(GPS)
-			{
-				//Location l=new Location(LOCATION_SERVICE);
-				LatLng self =new LatLng(Lat,Lon);
-				mMap.addMarker(new MarkerOptions().position(self).title("You"));
-			}
-        }
-        else if(Arrays.asList(locationList).contains(dbName)) {
-
-        }
-
-	}
 }
