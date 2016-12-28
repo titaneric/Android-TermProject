@@ -56,8 +56,8 @@ public class MapsActivity extends AppCompatActivity {
 			mDbHelper.open();
 			HashMap rowList = mDbHelper.lookForOtherAttribute(Place, selectedItem);
 			mDbHelper.close();
-			String LatS=String.valueOf(rowList.get("latitude"));
-			String LogS=String.valueOf(rowList.get("longitude"));
+			String LatS=String.valueOf(rowList.get("緯度"));
+			String LogS=String.valueOf(rowList.get("經度"));
 			Uri gmmIntentUri = Uri.parse("geo:"+LatS+","+LogS+"?q="+LatS+","+LogS+"("+Place+")");
 			Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
 			mapIntent.setPackage("com.google.android.apps.maps");
@@ -70,8 +70,8 @@ public class MapsActivity extends AppCompatActivity {
 			mDbHelper.open();
 			HashMap rowList = mDbHelper.lookForOtherAttribute(Place, selectedItem);
 			mDbHelper.close();
-			String LatS=String.valueOf(rowList.get("latitude"));
-			String LogS=String.valueOf(rowList.get("longitude"));
+			String LatS=String.valueOf(rowList.get("緯度"));
+			String LogS=String.valueOf(rowList.get("經度"));
 			Uri gmmIntentUri = Uri.parse("geo:"+LatS+","+LogS+"?q="+Place);
 			Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
 			mapIntent.setPackage("com.google.android.apps.maps");
@@ -83,7 +83,7 @@ public class MapsActivity extends AppCompatActivity {
 			mDbHelper.open();
 			HashMap rowList = mDbHelper.lookForOtherAttribute_DSC(Place, selectedItem);
 			mDbHelper.close();
-			String Address = rowList.get("location").toString();
+			String Address = rowList.get("店址").toString();
 
 
 			Uri gmmIntentUri = Uri.parse("geo:0,0?q="+Address+Place);

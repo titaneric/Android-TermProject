@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity
                 TextView weather = (TextView) content.findViewById(R.id.weather);
                 if(idName.equals("swim") || idName.equals("danger")) {
                     county_spin.setEnabled(true);
-                    time.setText("明日白天");
+                    time.setText("白天");
                     weather.setText(catchWeather(selectedItem));
                 }
                 else {
