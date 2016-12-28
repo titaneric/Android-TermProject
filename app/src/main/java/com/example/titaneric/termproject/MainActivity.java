@@ -1,4 +1,4 @@
-﻿package com.example.titaneric.termproject;
+package com.example.titaneric.termproject;
 
 import android.content.Context;
 import android.content.Intent;
@@ -218,7 +218,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         String title = item.getTitle().toString();
         if (id == R.id.swim) {
+            //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            //toolbar.setSubtitle(subTitle);
+            //setSupportActionBar(toolbar);
             OpenDrawer("swim", title);
+
         } else if (id == R.id.surf) {
             OpenDrawer("surf", title);
         } else if (id == R.id.dive) {
@@ -269,7 +273,6 @@ public class MainActivity extends AppCompatActivity
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 final String selectedItem = parent.getItemAtPosition(position).toString();
                 View container = findViewById(R.id.contain);
-
                 View content = findViewById(R.id.nav);
                 TextView time = (TextView) content.findViewById(R.id.time);
                 TextView weather = (TextView) content.findViewById(R.id.weather);
@@ -280,19 +283,6 @@ public class MainActivity extends AppCompatActivity
                 }
                 else {
                     county_spin.setEnabled(false);
-
-                if(idName == "swim" || idName == "danger") {
-                    View content = findViewById(R.id.nav);
-                    TextView time = (TextView) content.findViewById(R.id.time);
-                    TextView weather = (TextView) content.findViewById(R.id.weather);
-                    time.setText("白天");
-                    weather.setText(catchWeather(selectedItem));
-                }
-                else{
-                    View content = findViewById(R.id.nav);
-                    TextView time = (TextView) content.findViewById(R.id.time);
-                    TextView weather = (TextView) content.findViewById(R.id.weather);
-
                     time.setText("");
                     weather.setText("");
                 }
