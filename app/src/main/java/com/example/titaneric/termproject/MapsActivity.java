@@ -21,17 +21,14 @@ import java.util.HashMap;
 
 public class MapsActivity extends AppCompatActivity {
 
-	private GoogleMap mMap;
 
 	private String Place;
 	private String idName;
     private String dbName;
-    private String[] latlonList = {"swim", "danger"};
-    private String[] locationList = {"dive", "canoe", "surf"};
 	private TextView Title;
 	private TextView Content;
 	private String selectedItem;
-	private double Lon,Lat;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

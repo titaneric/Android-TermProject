@@ -3,14 +3,12 @@ package com.example.titaneric.termproject;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationListener;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -40,14 +38,10 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     //public static String[] introList = {"Start the Game","Score board",  "Help"};
-    boolean GPS = false;
-    private LocationManager lms;
-    private Location location;
-    LocationManager mLocationManager;
-    private Spinner county_spin;
+
 
 
     @Override
@@ -78,11 +72,7 @@ public class MainActivity extends AppCompatActivity
         }
         String dbName = "danger";
         OpenDrawer(dbName, "危險水域");
-        LocationManager status = (LocationManager) (this.getSystemService(Context.LOCATION_SERVICE));
-        if (status.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            //如果GPS或網路定位開啟，呼叫locationServiceInitial()更新位置
-            locationServiceInitial();
-        }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -95,33 +85,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void locationServiceInitial() {
-        lms = (LocationManager) getSystemService(LOCATION_SERVICE); //取得系統定位服務
-           if (lms.isProviderEnabled(LocationManager.GPS_PROVIDER) ) {
-               while (location==null) {
-                  // lms.requestLocationUpdates(LocationManager.GPS_PROVIDER,600000,1,LocationListener);
-                   location = getLastKnownLocation();
-               }//使用GPS定位座標
-         }
 
-
-    }
-    private Location getLastKnownLocation() {
-        mLocationManager = (LocationManager)this.getSystemService(LOCATION_SERVICE);
-        List<String> providers = mLocationManager.getProviders(true);
-        Location bestLocation = null;
-        for (String provider : providers) {
-            Location l = mLocationManager.getLastKnownLocation(provider);
-            if (l == null) {
-                continue;
-            }
-            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
-                // Found best last known location: %s", l);
-                bestLocation = l;
-            }
-        }
-        return bestLocation;
-    }
 
 
     @Override
@@ -141,54 +105,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            if(GPS){
-                GPS=false;
-                Toast.makeText(getApplicationContext(),"關閉GPS定位",Toast.LENGTH_SHORT).show();
-                item.setIcon(R.drawable.ic_gps_off_black_48dp);
-                county_spin = (Spinner) findViewById(R.id.county_spin);
-                county_spin.setEnabled(true);
-            }
-            else {
-                LocationManager l = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                if(!l.isProviderEnabled(l.GPS_PROVIDER))
-                {
-                    Toast.makeText(getApplicationContext(),"請先開啟GPS",Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    GPS=true;
-                    item.setIcon(R.drawable.ic_gps_fixed_black_48dp);
-                    Toast.makeText(getApplicationContext(),"開啟GPS定位",Toast.LENGTH_SHORT).show();
-                    Spinner county_spin = (Spinner) findViewById(R.id.county_spin);
-                    county_spin.setEnabled(false);
-                    Geocoder g=new Geocoder(getApplicationContext(), Locale.TRADITIONAL_CHINESE);
-                   // Location Loc=new Location(LOCATION_SERVICE);
-                    List<Address> lstAddress;
-                    try {
-                        if(location!=null) {
-                            lstAddress = g.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                            String city = lstAddress.get(0).getAdminArea();
-                            Toast.makeText(getApplicationContext(), city, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-
-                }
-            }
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
     private Runnable mutiThread = new Runnable() {
         public void run(){
             syncWeatherData();
@@ -394,35 +311,7 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
 
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {	//定位狀態改變
-        //status=OUT_OF_SERVICE 供應商停止服務
-        //status=TEMPORARILY_UNAVAILABLE 供應商暫停服務
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        Toast.makeText(getApplicationContext(), provider, Toast.LENGTH_SHORT).show();
-
-        if(GPS) {
-            GPS = false;
-            //Toast.makeText(getApplicationContext(), "關閉GPS定位", Toast.LENGTH_SHORT).show();
-            findViewById(R.id.action_settings).setBackgroundResource(R.drawable.ic_gps_off_black_48dp);
-            Spinner county_spin = (Spinner) findViewById(R.id.county_spin);
-            county_spin.setEnabled(true);
-        }
-    }
 
 
 }
