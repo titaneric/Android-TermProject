@@ -44,7 +44,37 @@ public class MapsActivity extends AppCompatActivity {
 		Title=(TextView)findViewById(R.id.place);
 		Content=(TextView)findViewById(R.id.otherInfo);
 		Title.setText(Place);
-		Content.setText("INFO");
+        if(idName.equals("danger")){
+            OpenDataAdaptor mDbHelper = new OpenDataAdaptor(this, dbName);
+            mDbHelper.createDatabase();
+            mDbHelper.open();
+            HashMap rowList = mDbHelper.lookForOtherAttribute(Place, selectedItem);
+            mDbHelper.close();
+            String LatS=String.valueOf(rowList.get("緯度"));
+            String LogS=String.valueOf(rowList.get("經度"));
+            Content.setText("緯度: "+LatS+"\n經度: " + LogS);
+        }
+        else if(idName.equals("swim"))
+        {
+            OpenDataAdaptor mDbHelper = new OpenDataAdaptor(this, dbName);
+            mDbHelper.createDatabase();
+            mDbHelper.open();
+            HashMap rowList = mDbHelper.lookForOtherAttribute(Place, selectedItem);
+            mDbHelper.close();
+            String LatS=String.valueOf(rowList.get("緯度"));
+            String LogS=String.valueOf(rowList.get("經度"));
+            Content.setText("備註: " + String.valueOf(rowList.get("敘述")) + "\n緯度: "+LatS+"\n經度: " + LogS);
+        }
+        else {
+            OpenDataAdaptor mDbHelper = new OpenDataAdaptor(this, dbName);
+            mDbHelper.createDatabase();
+            mDbHelper.open();
+            HashMap rowList = mDbHelper.lookForOtherAttribute_DSC(Place, selectedItem);
+            mDbHelper.close();
+            String Address = rowList.get("店址").toString();
+            Content.setText("所有人: "+String.valueOf(rowList.get("所有人"))+ "\n電話: " + String.valueOf(rowList.get("電話"))+ "\n店址: " + Address);
+        }
+
 
 
 	}
@@ -58,6 +88,7 @@ public class MapsActivity extends AppCompatActivity {
 			mDbHelper.close();
 			String LatS=String.valueOf(rowList.get("緯度"));
 			String LogS=String.valueOf(rowList.get("經度"));
+			//Content.setText("緯度: "+LatS+"\n + 經度: " + LogS);
 			Uri gmmIntentUri = Uri.parse("geo:"+LatS+","+LogS+"?q="+LatS+","+LogS+"("+Place+")");
 			Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
 			mapIntent.setPackage("com.google.android.apps.maps");
@@ -72,7 +103,8 @@ public class MapsActivity extends AppCompatActivity {
 			mDbHelper.close();
 			String LatS=String.valueOf(rowList.get("緯度"));
 			String LogS=String.valueOf(rowList.get("經度"));
-			Uri gmmIntentUri = Uri.parse("geo:"+LatS+","+LogS+"?q="+Place);
+            //Content.setText("備註: " + String.valueOf(rowList.get("敘述")) + "\n緯度: "+LatS+"\n + 經度: " + LogS);
+            Uri gmmIntentUri = Uri.parse("geo:"+LatS+","+LogS+"?q="+Place);
 			Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
 			mapIntent.setPackage("com.google.android.apps.maps");
 			startActivity(mapIntent);
@@ -84,9 +116,10 @@ public class MapsActivity extends AppCompatActivity {
 			HashMap rowList = mDbHelper.lookForOtherAttribute_DSC(Place, selectedItem);
 			mDbHelper.close();
 			String Address = rowList.get("店址").toString();
+            //Content.setText("所有人: "+String.valueOf(rowList.get("所有人"))+ "\n電話: " + String.valueOf(rowList.get("電話"))+ "店址: " + Address);
 
 
-			Uri gmmIntentUri = Uri.parse("geo:0,0?q="+Address+Place);
+            Uri gmmIntentUri = Uri.parse("geo:0,0?q="+Address+Place);
 			Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
 			mapIntent.setPackage("com.google.android.apps.maps");
 			startActivity(mapIntent);

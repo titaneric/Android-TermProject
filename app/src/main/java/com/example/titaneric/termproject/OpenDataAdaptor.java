@@ -108,7 +108,7 @@ public class OpenDataAdaptor {
     }
 
     public HashMap lookForOtherAttribute(String id, String tableName){
-        String sql =String.format("SELECT * FROM %s WHERE location = \"%s\"", tableName, id);
+        String sql =String.format("SELECT * FROM %s WHERE 地點 = \"%s\"", tableName, id);
         Cursor c = mDb.rawQuery(sql, null);
         if(c!=null){
             c.moveToFirst();
@@ -122,7 +122,7 @@ public class OpenDataAdaptor {
         return m;
     }
     public HashMap lookForOtherAttribute_DSC(String id, String tableName){
-        String sql =String.format("SELECT * FROM %s WHERE shopName = \"%s\"", tableName, id);
+        String sql =String.format("SELECT * FROM %s WHERE 業者名稱 = \"%s\"", tableName, id);
         Cursor c = mDb.rawQuery(sql, null);
         if(c!=null){
             c.moveToFirst();
