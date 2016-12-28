@@ -50,8 +50,8 @@ public class MapsActivity extends AppCompatActivity {
             mDbHelper.open();
             HashMap rowList = mDbHelper.lookForOtherAttribute(Place, selectedItem);
             mDbHelper.close();
-            String LatS=String.valueOf(rowList.get("緯度"));
-            String LogS=String.valueOf(rowList.get("經度"));
+            String LatS=String.valueOf(rowList.get("緯度")).substring(0,8);
+            String LogS=String.valueOf(rowList.get("經度")).substring(0,9);
             Content.setText("緯度: "+LatS+"\n經度: " + LogS);
         }
         else if(idName.equals("swim"))
@@ -61,8 +61,8 @@ public class MapsActivity extends AppCompatActivity {
             mDbHelper.open();
             HashMap rowList = mDbHelper.lookForOtherAttribute(Place, selectedItem);
             mDbHelper.close();
-            String LatS=String.valueOf(rowList.get("緯度"));
-            String LogS=String.valueOf(rowList.get("經度"));
+            String LatS=String.valueOf(rowList.get("緯度")).substring(0,8);
+            String LogS=String.valueOf(rowList.get("經度")).substring(0,9);
             Content.setText("備註: " + String.valueOf(rowList.get("敘述")) + "\n緯度: "+LatS+"\n經度: " + LogS);
         }
         else {
